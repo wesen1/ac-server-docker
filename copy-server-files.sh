@@ -1,17 +1,19 @@
 #!/bin/bash
 
+downloadUrl="https://github.com/assaultcube/AC/releases/download/v1.2.0.2/AssaultCube_v1.2.0.2.tar.bz2"
 archiveFilePath="./AssaultCube_v1.2.0.2.tar.bz2"
 archiveMainDirectoryName="AssaultCube_v1.2.0.2"
-tmpOutputDirectory="./ac-server"
+outputDirectory="/ac-server"
 
-if [ ! -f "$archiveFilePath" ]; then
-  echo "$archiveFilePath not found!"
-fi
 
-if [ -d "$tmpOutputDirectory" ]; then
-  rm -r "$tmpOutputDirectory"
-fi
+# Install the packages that are needed to download and extract the AssaultCube server files
+apt-get install -y wget
+apt-get install -y bzip2
 
+# Download the current AssaultCube 1.2.0.2 release
+wget "$downloadUrl"
+
+# Extract the AssaultCube server files
 filesToExtract=(
     # These files are the ones that are required inside the container
     "$archiveMainDirectoryName/bin_unix/linux_64_server"
@@ -35,5 +37,12 @@ filesToExtract=(
     "$archiveMainDirectoryName/packages/textures"
 )
 
-mkdir "$tmpOutputDirectory"
-tar -xvf "$archiveFilePath" -C "$tmpOutputDirectory/" --strip-components=1 "${filesToExtract[@]}"
+mkdir "$outputDirectory"
+tar -xvf "$archiveFilePath" -C "$outputDirectory/" --strip-components=1 "${filesToExtract[@]}"
+
+# Remove the downloaded archive
+rm "$archiveFilePath"
+
+# Remove the temporary installed packages
+apt-get autoremove -y wget
+apt-get autoremove -y bzip2
