@@ -34,5 +34,4 @@ services:
 ## Build
 
 1. Run `apt-get install docker-compose`
-2. Download "AssaultCube_v1.2.0.2.tar.bz2" and place it in this directory
-3. Run `./build.sh`
+2. Run `docker build -t ac-server .`
