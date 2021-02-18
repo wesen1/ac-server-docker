@@ -6,4 +6,4 @@ RUN apt-get update && \
     rm /copy-server-files.sh && \
     chmod +x /ac-server/server.sh
 WORKDIR /ac-server
-CMD ./server.sh
+ENTRYPOINT [ "./server.sh" ]
